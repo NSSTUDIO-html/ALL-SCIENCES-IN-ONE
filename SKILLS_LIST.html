@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>15 Tech Domains Skills Portal</title>
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Arial,sans-serif;
+}
+body{
+background:linear-gradient(135deg,#dbeafe,#f8fafc);
+padding:20px;
+}
+h1{
+text-align:center;
+margin-bottom:15px;
+font-size:42px;
+}
+#search{
+display:block;
+margin:20px auto;
+width:60%;
+padding:14px;
+border:none;
+border-radius:30px;
+box-shadow:0 4px 10px rgba(0,0,0,.1);
+}
+.container{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+gap:20px;
+}
+.card{
+background:white;
+padding:25px;
+border-radius:25px;
+box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.card h2{
+margin-bottom:20px;
+color:#1e3a8a;
+}
+.group{
+margin-bottom:20px;
+}
+.group h3{
+margin-bottom:12px;
+color:#2563eb;
+}
+.buttons{
+display:flex;
+flex-wrap:wrap;
+gap:10px;
+}
+.skill-btn{
+border:none;
+padding:10px 16px;
+border-radius:30px;
+background:#eff6ff;
+cursor:pointer;
+transition:.3s;
+font-weight:bold;
+}
+.skill-btn:hover{
+background:#2563eb;
+color:white;
+transform:scale(1.05);
+}
+.summary{
+margin-top:30px;
+background:white;
+padding:30px;
+border-radius:25px;
+box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.stats{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(180px,1fr));
+gap:15px;
+margin-top:20px;
+}
+.stat{
+padding:30px;
+text-align:center;
+background:#f1f5f9;
+border-radius:20px;
+font-weight:bold;
+}
+</style>
+</head>
+<body>
+
+<h1>🚀 15 Tech Domains Skill Portal</h1>
+<input type="text" id="search" placeholder="Search skills...">
+
+<div class="container" id="skillsContainer"></div>
+
+<div class="summary">
+<h2>📊 Summary</h2>
+<div class="stats">
+<div class="stat">15 Domains</div>
+<div class="stat">100+ Skills</div>
+<div class="stat">Developer Roadmaps</div>
+<div class="stat">Interview Prep</div>
+</div>
+</div>
+
+<script>
+const domains=[
+{
+ title:'1. Programming & Software Development',
+ groups:{
+ Languages:['C','C++','Java','Python','JavaScript','TypeScript','C#','Go','Rust','PHP','Kotlin','Swift'],
+ Concepts:['DSA','OOP','Design Patterns','Git','APIs','Unit Testing'],
+ Frameworks:['Spring','.NET','Django','Flask','FastAPI','Express']
+ }
+},
+{
+ title:'2. Web Development',
+ groups:{
+ Frontend:['HTML5','CSS3','JavaScript','TypeScript'],
+ Frameworks:['React','Angular','Vue','Next.js','Svelte'],
+ Backend:['Node.js','Django','Flask','Spring Boot','Laravel'],
+ Databases:['MySQL','PostgreSQL','MongoDB','Redis']
+ }
+},
+{
+ title:'3. Mobile App Development',
+ groups:{
+ Native:['Kotlin','Java','Swift'],
+ CrossPlatform:['Flutter','React Native','Ionic','Xamarin'],
+ Backend:['Firebase','Supabase','REST APIs']
+ }
+},
+{
+ title:'4. AI & Machine Learning',
+ groups:{
+ Languages:['Python','R','Julia'],
+ Libraries:['NumPy','Pandas','ScikitLearn','TensorFlow','PyTorch','Keras'],
+ Areas:['Deep Learning','NLP','Computer Vision','Generative AI']
+ }
+},
+{
+ title:'5. Data Science & Big Data',
+ groups:{
+ BigData:['Hadoop','Spark','Hive','Kafka'],
+ Visualization:['Power BI','Tableau','Matplotlib'],
+ Engineering:['Airflow','Snowflake','Databricks']
+ }
+},
+{
+ title:'6. Cloud & DevOps',
+ groups:{
+ Cloud:['AWS','Azure','Google Cloud'],
+ Tools:['Docker','Kubernetes','Jenkins','Terraform','Ansible']
+ }
+},
+{
+ title:'7. Cybersecurity',
+ groups:{
+ Security:['Network Security','Web Security','Cloud Security'],
+ Tools:['Kali Linux','Wireshark','Burp Suite','Metasploit','Nmap']
+ }
+},
+{
+ title:'8. Blockchain & Web3',
+ groups:{
+ Platforms:['Ethereum','Solana','Polygon'],
+ Tools:['Hardhat','Truffle','Web3.js'],
+ Concepts:['Smart Contracts','DeFi','NFTs']
+ }
+},
+{
+ title:'9. Game Development',
+ groups:{
+ Engines:['Unity','Unreal Engine','Godot'],
+ Languages:['C#','C++','GDScript']
+ }
+},
+{
+ title:'10. AR & VR',
+ groups:{
+ Platforms:['Unity XR','ARCore','ARKit','OpenXR'],
+ Devices:['Meta Quest','HTC Vive']
+ }
+},
+{
+ title:'11. Robotics',
+ groups:{
+ Platforms:['ROS','ROS2','Arduino'],
+ Areas:['Embedded Systems','Automation','Control Systems']
+ }
+},
+{
+ title:'12. IoT',
+ groups:{
+ Hardware:['Arduino','Raspberry Pi','ESP32'],
+ Protocols:['MQTT','HTTP','Zigbee','Bluetooth']
+ }
+},
+{
+ title:'13. Hardware & Electronics',
+ groups:{
+ Topics:['Computer Architecture','Digital Electronics','Microprocessors'],
+ Tools:['Proteus','Multisim','Verilog']
+ }
+},
+{
+ title:'14. Networking',
+ groups:{
+ Topics:['TCP/IP','DNS','Routing','VPN'],
+ Tools:['Cisco Packet Tracer','Wireshark','GNS3']
+ }
+},
+{
+ title:'15. Operating Systems',
+ groups:{
+ Systems:['Linux','Windows Server','Unix','macOS'],
+ Admin:['Bash','PowerShell','SSH','Nginx']
+ }
+}
+];
+
+function renderDomains(filter=''){
+const container=document.getElementById('skillsContainer');
+container.innerHTML='';
+
+ domains.forEach(domain=>{
+ let card=document.createElement('div');
+ card.className='card';
+ let html=`<h2>${domain.title}</h2>`;
+
+ for(let group in domain.groups){
+ let skills=domain.groups[group].filter(skill=>
+ skill.toLowerCase().includes(filter.toLowerCase())
+ );
+
+ if(skills.length>0){
+ html+=`<div class='group'>
+ <h3>${group}</h3>
+ <div class='buttons'>`;
+
+ skills.forEach(skill=>{
+ html+=`<button class='skill-btn' onclick="alert('${skill}')">${skill}</button>`;
+ });
+
+ html+='</div></div>';
+ }
+ }
+
+ card.innerHTML=html;
+ container.appendChild(card);
+ });
+}
+
+renderDomains();
+
+document.getElementById('search').addEventListener('keyup',function(){
+renderDomains(this.value);
+});
+</script>
+
+</body>
+</html>
